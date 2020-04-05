@@ -1,0 +1,33 @@
+version: "3"
+
+networks:
+  web-network:
+
+services:
+  docker-nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "8080:80"
+    tty: true
+    volumes:
+      - ./nginx/app:/var/www
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - web-network
+  docker-php-fpm:
+    build:
+      context: ./php-fpm
+    tty: true
+    volumes:
+      - ./nginx/app:/var/www
+    networks:
+      - web-network
+
+  docker-php-scratch:
+    build:
+      context: ./php-scratch
+    tty: true
+    volumes:
+      - ./nginx/app:/var/www
+
